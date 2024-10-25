@@ -160,7 +160,8 @@ public class GameScreen2 implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsScreen(game));
+                game.setScreen(new SettingsScreen(game,GameScreen2.this));
+
             }
         });
         stage.addActor(settingsButton);

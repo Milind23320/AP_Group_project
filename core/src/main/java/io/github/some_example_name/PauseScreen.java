@@ -1,6 +1,7 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -52,7 +53,7 @@ public class PauseScreen implements Screen {
     private void createUI(TextButtonStyle buttonStyle) {
         // Create and configure Resume button
         TextButton resumeButton = new TextButton("Resume", buttonStyle);
-        resumeButton.setPosition(350, 300); // Positioning
+        resumeButton.setPosition(100, 300); // Positioning
         resumeButton.setSize(150, 50); // Size adjustment
         resumeButton.addListener(new ClickListener() {
             @Override
@@ -71,7 +72,7 @@ public class PauseScreen implements Screen {
 
         // Create and configure Main Menu button
         TextButton mainMenuButton = new TextButton("Main Menu", buttonStyle);
-        mainMenuButton.setPosition(350, 200); // Positioning
+        mainMenuButton.setPosition(100, 200); // Positioning
         mainMenuButton.setSize(150, 50); // Size adjustment
         mainMenuButton.addListener(new ClickListener() {
             @Override
@@ -119,5 +120,9 @@ public class PauseScreen implements Screen {
         stage.dispose();
         font.dispose();
         backgroundTexture.dispose();
+    }
+
+    public InputProcessor getStage() {
+        return stage;
     }
 }

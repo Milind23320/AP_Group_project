@@ -115,7 +115,7 @@ public class LoadGameScreen implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsScreen(game));
+                game.setScreen(new SettingsScreen(game,LoadGameScreen.this));
             }
         });
 
@@ -154,7 +154,7 @@ public class LoadGameScreen implements Screen {
 
     @Override
     public void hide() {
-        stage.dispose();
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

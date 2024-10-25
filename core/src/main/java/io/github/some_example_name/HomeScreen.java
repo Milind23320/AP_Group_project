@@ -1,10 +1,7 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-
-/** First screen of the application. Displayed after the application is created. */
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,9 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class HomeScreen implements Screen {
@@ -28,7 +23,7 @@ public class HomeScreen implements Screen {
 
     public HomeScreen(AngryBirdsGame game) {
         this.game = game;
-        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        // Load resources once in the constructor
         background = new Texture("background_home.png");
 
         // Load font and create skin
@@ -41,18 +36,19 @@ public class HomeScreen implements Screen {
         TextButtonStyle textButtonStyle = new TextButtonStyle();
         textButtonStyle.font = skin.getFont("default-font");
         skin.add("default", textButtonStyle);
-
-        createUI();
     }
 
     private void createUI() {
+        // Clear previous UI elements to prevent duplication
+        stage.clear();
+
         // Use the created TextButtonStyle
         TextButton newGameButton = new TextButton("New Game", skin);
         newGameButton.setPosition((float) Gdx.graphics.getWidth()/2 - newGameButton.getWidth()/2, 300);
         stage.addActor(newGameButton);
 
         TextButton loadGameButton = new TextButton("Load Game", skin);
-        loadGameButton.setPosition((float) Gdx.graphics.getWidth()/2 - loadGameButton.getWidth()/2 , 200);
+        loadGameButton.setPosition((float) Gdx.graphics.getWidth()/2 - loadGameButton.getWidth()/2, 200);
         stage.addActor(loadGameButton);
 
         TextButton settingsButton = new TextButton("Settings", skin);
@@ -60,29 +56,33 @@ public class HomeScreen implements Screen {
         stage.addActor(settingsButton);
 
         // Add click listeners for buttons
-        // TODO: Implement event handling for navigation
-        newGameButton.addListener(new ClickListener(){
+        newGameButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event ,float x,float y){
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new GameScreen1(game));
             }
         });
-        loadGameButton.addListener(new ClickListener(){
+
+        loadGameButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event ,float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new LoadGameScreen(game));
             }
         });
-        settingsButton.addListener(new ClickListener(){
+
+        settingsButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event ,float x, float y){
-                game.setScreen(new SettingsScreen(game));
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new SettingsScreen(game, HomeScreen.this));
             }
         });
     }
 
     @Override
     public void show() {
+        // Initialize the stage with the viewport every time the screen is shown
+        stage = new Stage(new StretchViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        createUI(); // Create UI elements each time the screen is shown
         Gdx.input.setInputProcessor(stage);
     }
 
@@ -95,10 +95,9 @@ public class HomeScreen implements Screen {
         game.batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         game.batch.end();
-        stage.act();
+        stage.act(delta);
         stage.draw();
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -109,27 +108,28 @@ public class HomeScreen implements Screen {
         game.batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
     }
 
+    @Override
+    public void pause() {}
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
+    public void resume() {}
 
     @Override
     public void hide() {
-        stage.dispose();
+        // Do not dispose resources here; simply clear the input processor
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
     public void dispose() {
+        // Only dispose resources when HomeScreen is no longer needed
         stage.dispose();
         background.dispose();
         font.dispose();
         skin.dispose();
+    }
+
+    public InputProcessor getStage() {
+        return stage;
     }
 }
