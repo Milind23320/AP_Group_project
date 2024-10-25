@@ -67,6 +67,12 @@ public class SettingsScreen implements Screen {
         // "About Us" Option Label
         Label aboutUsLabel = new Label("About Us", labelStyle);
         aboutUsLabel.setPosition(100, 150); // Adjust positioning as needed
+        aboutUsLabel.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new AboutUsScreen(game,previousScreen)); // Navigate to the AboutUsScreen
+            }
+        });
         stage.addActor(aboutUsLabel);
 
         // Add "Cross" Button for Toggling Back
