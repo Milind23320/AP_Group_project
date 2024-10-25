@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
@@ -20,6 +19,8 @@ public class LoadGameScreen implements Screen {
     // Textures
     private Texture backgroundTexture;
     private Texture[] levelTextures;
+    private Texture quitButtonTexture;
+    private Texture settingsButtonTexture;
 
     public LoadGameScreen(AngryBirdsGame game) {
         this.game = game;
@@ -27,6 +28,8 @@ public class LoadGameScreen implements Screen {
 
         // Load the background texture
         backgroundTexture = new Texture("default_background.jpeg");
+        quitButtonTexture = new Texture("quit_button.png");
+        settingsButtonTexture = new Texture("settings_button.png");
 
         // Load level textures
         levelTextures = new Texture[12];
@@ -90,6 +93,38 @@ public class LoadGameScreen implements Screen {
 
         // Add table to stage
         stage.addActor(table);
+
+        // Create a Table for the top-right corner buttons (quit and settings)
+        Table buttonTable = new Table();
+        buttonTable.top().right(); // Position at the top-right
+        buttonTable.setFillParent(true);
+
+        // Set up Quit Button
+        Image quitButton = new Image(quitButtonTexture);
+        quitButton.setSize(45, 45); // Resized
+        quitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new HomeScreen(game));
+            }
+        });
+
+        // Set up Settings Button
+        Image settingsButton = new Image(settingsButtonTexture);
+        settingsButton.setSize(45, 45); // Resized
+        settingsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new SettingsScreen(game));
+            }
+        });
+
+        // Add buttons to the buttonTable
+        buttonTable.add(settingsButton).size(45, 45).padRight(10); // Padding between buttons
+        buttonTable.add(quitButton).size(45, 45).padRight(10); // Padding for spacing
+
+        // Add buttonTable to the stage last so it appears on top
+        stage.addActor(buttonTable);
     }
 
     @Override
@@ -126,6 +161,8 @@ public class LoadGameScreen implements Screen {
     public void dispose() {
         stage.dispose();
         backgroundTexture.dispose();
+        quitButtonTexture.dispose();
+        settingsButtonTexture.dispose();
 
         // Dispose level textures
         for (Texture levelTexture : levelTextures) {

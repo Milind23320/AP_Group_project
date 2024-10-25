@@ -1,6 +1,7 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -43,7 +44,7 @@ public class GameScreen2 implements Screen {
 
         // Load essential textures
         slingshotTexture = new Texture("slingshot.png");
-        backgroundTexture = new Texture("background_game2.jpeg");
+        backgroundTexture = new Texture("background_game2.jpg");
 
         // Load bird textures
         redBirdTexture = new Texture("red_bird.png");
@@ -64,7 +65,11 @@ public class GameScreen2 implements Screen {
         pigTexture2 = new Texture("pig_small.png");
         pigTexture3 = new Texture("pig_small.png");
 
+        // Initialize UI components
+        setupUI();
+    }
 
+    private void setupUI() {
         // Create and add background
         Image background = new Image(backgroundTexture);
         background.setSize(800, 600);
@@ -87,67 +92,70 @@ public class GameScreen2 implements Screen {
         blueBird.setPosition(68, 80);
         stage.addActor(blueBird);
 
-        Image pig1 = new Image(pigTexture1);
-        pig1.setSize(40, 40); // Adjust size as necessary
-        pig1.setPosition(500, 80); // Adjust position as needed
-        stage.addActor(pig1);
-
-        Image pig2 = new Image(pigTexture2);
-        pig2.setSize(40, 40); // Adjust size as necessary
-        pig2.setPosition(550, 80); // Adjust position as needed
-        stage.addActor(pig2);
-
-        Image pig3 = new Image(pigTexture3);
-        pig3.setSize(40, 40); // Adjust size as necessary
-        pig3.setPosition(600, 80); // Adjust position as needed
-        stage.addActor(pig3);
-
         Image yellowBird = new Image(yellowBirdTexture);
         yellowBird.setSize(50, 50); // Resized
         yellowBird.setPosition(20, 80);
         stage.addActor(yellowBird);
 
+        // Create and add pigs
+        Image pig1 = new Image(pigTexture1);
+        pig1.setSize(40, 40); // Adjust size as necessary
+        pig1.setPosition(500, 80);
+        stage.addActor(pig1);
+
+        Image pig2 = new Image(pigTexture2);
+        pig2.setSize(40, 40);
+        pig2.setPosition(550, 80);
+        stage.addActor(pig2);
+
+        Image pig3 = new Image(pigTexture3);
+        pig3.setSize(40, 40);
+        pig3.setPosition(600, 80);
+        stage.addActor(pig3);
+
         // Add blocks
         Image woodSquare = new Image(woodSquareTexture);
-        woodSquare.setSize(30, 30); // Resized
+        woodSquare.setSize(30, 30);
         woodSquare.setPosition(300, 150);
         stage.addActor(woodSquare);
 
         Image glassTriangle = new Image(glassTriangleTexture);
-        glassTriangle.setSize(30, 30); // Resized
+        glassTriangle.setSize(30, 30);
         glassTriangle.setPosition(350, 150);
         stage.addActor(glassTriangle);
 
         Image stoneCircle = new Image(stoneCircleTexture);
-        stoneCircle.setSize(30, 30); // Resized
+        stoneCircle.setSize(30, 30);
         stoneCircle.setPosition(400, 150);
         stage.addActor(stoneCircle);
 
-        // Add buttons
+        // Add Quit Button
         Image quitButton = new Image(quitButtonTexture);
         quitButton.setSize(45, 45); // Resized
         quitButton.setPosition(730, 530);
-        quitButton.addListener(new ClickListener(){
+        quitButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event,float x, float y){
+            public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(new HomeScreen(game));
             }
         });
         stage.addActor(quitButton);
 
+        // Add Pause Button
         Image pauseButton = new Image(pauseButtonTexture);
         pauseButton.setSize(45, 45); // Resized
         pauseButton.setPosition(660, 530);
-        pauseButton.addListener(new ClickListener(){
+        pauseButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event,float x, float y){
-                game.setScreen(new PauseScreen(game));
+            public void clicked(InputEvent event, float x, float y) {
+                game.pauseCurrentScreen(GameScreen2.this);
             }
         });
         stage.addActor(pauseButton);
 
+        // Add Settings Button
         Image settingsButton = new Image(settingsButtonTexture);
-        settingsButton.setSize(45, 45); // Resized
+        settingsButton.setSize(45, 45);
         settingsButton.setPosition(590, 530);
         settingsButton.addListener(new ClickListener() {
             @Override
@@ -178,14 +186,21 @@ public class GameScreen2 implements Screen {
     }
 
     @Override
-    public void pause() {}
+    public void pause() {
+
+    }
 
     @Override
-    public void resume() {}
+    public void resume() {
+
+    }
 
     @Override
     public void hide() {
-        stage.dispose();
+        Gdx.input.setInputProcessor(null);
+
+        // No need to dispose of anything here; just make sure the screen is not active
+        Gdx.app.log("GameScreen2", "Screen is hidden.");
     }
 
     @Override
@@ -209,8 +224,13 @@ public class GameScreen2 implements Screen {
         pauseButtonTexture.dispose();
         settingsButtonTexture.dispose();
 
+        // Dispose pig textures
         pigTexture1.dispose();
         pigTexture2.dispose();
         pigTexture3.dispose();
+    }
+
+    public InputProcessor getStage() {
+        return stage;
     }
 }

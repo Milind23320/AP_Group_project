@@ -1,6 +1,7 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class GameScreen3 implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
+    private Screen prev_screen;
     private Texture slingshotTexture;
     private Texture backgroundTexture;
 
@@ -138,12 +140,13 @@ public class GameScreen3 implements Screen {
         Image pauseButton = new Image(pauseButtonTexture);
         pauseButton.setSize(45, 45); // Resized
         pauseButton.setPosition(660, 530);
-        pauseButton.addListener(new ClickListener(){
+        pauseButton.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event,float x, float y){
-                game.setScreen(new PauseScreen(game));
+            public void clicked(InputEvent event, float x, float y) {
+                game.pauseCurrentScreen(GameScreen3.this); // Pass the current screen
             }
         });
+
         stage.addActor(pauseButton);
 
         Image settingsButton = new Image(settingsButtonTexture);
@@ -185,7 +188,10 @@ public class GameScreen3 implements Screen {
 
     @Override
     public void hide() {
-        stage.dispose();
+        Gdx.input.setInputProcessor(null);
+
+        // No need to dispose of anything here; just make sure the screen is not active
+        Gdx.app.log("GameScreen2", "Screen is hidden.");
     }
 
     @Override
@@ -212,6 +218,10 @@ public class GameScreen3 implements Screen {
         pigTexture1.dispose();
         pigTexture2.dispose();
         pigTexture3.dispose();
+    }
+
+    public InputProcessor getStage() {
+        return stage;
     }
 }
 
