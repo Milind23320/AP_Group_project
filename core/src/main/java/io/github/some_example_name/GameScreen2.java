@@ -55,13 +55,13 @@ public class GameScreen2 implements Screen {
         yellowBirdTexture = new Texture("yellow_bird.png");
 
         // Load block textures
-        woodSquareTexture = new Texture("wooden_square_block.png");
-        woodCircleTexture = new Texture("wooden_circle_block.png");
-        woodRectangleTexture = new Texture("wooden_rectangle_block.png");
-        woodTriangleTexture = new Texture("wooden_triangle_block.png");
-        woodRightTriangleTexture = new Texture("wooden_right_triangle_block.png");
-        woodSmallStickTexture = new Texture("wooden_small_stick.png");
-        woodStickTexture = new Texture("wooden_stick.png");
+        woodSquareTexture = new Texture("glass_square_block.png");
+        woodCircleTexture = new Texture("glass_circle_block.png");
+        woodRectangleTexture = new Texture("glass_rectangle_block.png");
+        woodTriangleTexture = new Texture("glass_triangle_block.png");
+        woodRightTriangleTexture = new Texture("glass_right_triangle_block.png");
+        woodSmallStickTexture = new Texture("glass_small_stick.png");
+        woodStickTexture = new Texture("glass_stick.png");
 
         // Load button textures
         quitButtonTexture = new Texture("quit_button.png");
