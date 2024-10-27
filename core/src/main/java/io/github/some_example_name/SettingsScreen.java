@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,18 +15,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+import com.badlogic.gdx.audio.Music;
 public class SettingsScreen implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
     private Texture backgroundTexture;
     private Texture crossButtonTexture;
     private Screen previousScreen; // Reference to the screen from which Settings was opened
-
+    private Sound sound;
     public SettingsScreen(AngryBirdsGame game, Screen previousScreen) {
+
         this.game = game;
         this.previousScreen = previousScreen;
         this.stage = new Stage(new ScreenViewport());
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
 
         // Load the background texture (same as PauseScreen)
         backgroundTexture = new Texture("default_background.jpeg");
@@ -51,12 +54,23 @@ public class SettingsScreen implements Screen {
     private void createUI(LabelStyle labelStyle) {
         // "Sound" Option Label
         Label soundLabel = new Label("Sound", labelStyle);
-        soundLabel.setPosition(100, 300); // Adjust positioning as needed
+        soundLabel.setPosition(100, 300);// Adjust positioning as needed
         stage.addActor(soundLabel);
 
         // "Music" Option Label
         Label musicLabel = new Label("Music", labelStyle);
-        musicLabel.setPosition(100, 250); // Adjust positioning as needed
+        musicLabel.setPosition(100, 250);// Adjust positioning as needed
+        musicLabel.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event,float x,float y){
+                sound.play();
+                if (game.isMusicPlaying()) {
+                    game.pauseMusic();
+                } else {
+                    game.resumeMusic();
+                }
+            }
+        });
         stage.addActor(musicLabel);
 
         // "Rate Us" Option Label
@@ -70,6 +84,7 @@ public class SettingsScreen implements Screen {
         aboutUsLabel.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new AboutUsScreen(game,previousScreen)); // Navigate to the AboutUsScreen
             }
         });
@@ -82,6 +97,7 @@ public class SettingsScreen implements Screen {
         crossButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 // Navigate back to the previous screen (PauseScreen or HomeScreen)
                 game.setScreen(previousScreen);
                 if (previousScreen instanceof PauseScreen) {
@@ -132,6 +148,7 @@ public class SettingsScreen implements Screen {
         stage.dispose();
         backgroundTexture.dispose();
         crossButtonTexture.dispose();
+        sound.dispose();
     }
 
     public Stage getStage() {

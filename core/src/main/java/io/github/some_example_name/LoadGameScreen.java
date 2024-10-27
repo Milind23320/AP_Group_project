@@ -2,6 +2,7 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,11 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
+import com.badlogic.gdx.audio.Music;
 public class LoadGameScreen implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
-
+    private Sound sound;
     // Textures
     private Texture backgroundTexture;
     private Texture[] levelTextures;
@@ -30,7 +31,7 @@ public class LoadGameScreen implements Screen {
         backgroundTexture = new Texture("default_background.jpeg");
         quitButtonTexture = new Texture("quit_button.png");
         settingsButtonTexture = new Texture("settings_button.png");
-
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Load level textures
         levelTextures = new Texture[12];
         for (int i = 0; i < 12; i++) {
@@ -59,6 +60,7 @@ public class LoadGameScreen implements Screen {
                 levelImage.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        sound.play();
                         game.setScreen(new GameScreen1(game)); // Assuming GameScreen1 is Level 1
                     }
                 });
@@ -68,6 +70,7 @@ public class LoadGameScreen implements Screen {
                 levelImage.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        sound.play();
                         game.setScreen(new GameScreen2(game)); // Assuming GameScreen2 is Level 5
                     }
                 });
@@ -77,6 +80,7 @@ public class LoadGameScreen implements Screen {
                 levelImage.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
+                        sound.play();
                         game.setScreen(new GameScreen3(game)); // Assuming GameScreen3 is Level 9
                     }
                 });
@@ -105,6 +109,7 @@ public class LoadGameScreen implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new HomeScreen(game));
             }
         });
@@ -115,6 +120,7 @@ public class LoadGameScreen implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game,LoadGameScreen.this));
             }
         });

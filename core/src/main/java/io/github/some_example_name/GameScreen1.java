@@ -1,8 +1,9 @@
 package io.github.some_example_name;
-
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,9 +43,10 @@ public class GameScreen1 implements Screen {
     private Texture pigTexture1;
     private Texture pigTexture2;
     private Texture pigTexture3;
-
+    private Sound sound;
     public GameScreen1(AngryBirdsGame game) {
         this.game = game;
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Set up viewport to maintain aspect ratio
         stage = new Stage(new FitViewport(800, 600));
 
@@ -187,6 +189,7 @@ public class GameScreen1 implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new HomeScreen(game));
             }
         });
@@ -199,6 +202,7 @@ public class GameScreen1 implements Screen {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.pauseCurrentScreen(GameScreen1.this);
             }
         });
@@ -211,6 +215,7 @@ public class GameScreen1 implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game, GameScreen1.this));
             }
         });
@@ -232,6 +237,7 @@ public class GameScreen1 implements Screen {
         finishLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new GameScreen1_levelend(game)); // Navigate to level end screen
             }
         });

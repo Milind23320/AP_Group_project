@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,8 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.badlogic.gdx.audio.Music;
 public class GameScreen2_levelend implements Screen {
+    private Sound sound;
     private AngryBirdsGame game;
     private Stage stage;
     private Texture slingshotTexture;
@@ -48,7 +50,7 @@ public class GameScreen2_levelend implements Screen {
     public GameScreen2_levelend(AngryBirdsGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(800, 600));
-
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Load essential textures
         slingshotTexture = new Texture("slingshot.png");
         backgroundTexture = new Texture("background_game2.jpg");
@@ -131,6 +133,7 @@ public class GameScreen2_levelend implements Screen {
         retryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new GameScreen2(game)); // Go back to GameScreen2
             }
         });
@@ -143,6 +146,7 @@ public class GameScreen2_levelend implements Screen {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new GameScreen3(game)); // Go to GameScreen3
             }
         });
@@ -219,6 +223,7 @@ public class GameScreen2_levelend implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new HomeScreen(game));
             }
         });
@@ -231,6 +236,7 @@ public class GameScreen2_levelend implements Screen {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.pauseCurrentScreen(GameScreen2_levelend.this);
             }
         });
@@ -243,6 +249,7 @@ public class GameScreen2_levelend implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game,GameScreen2_levelend.this));
             }
         });

@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,8 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.badlogic.gdx.audio.Music;
 public class GameScreen3_levelend implements Screen {
+    private Sound sound;
     private AngryBirdsGame game;
     private Stage stage;
     private Texture slingshotTexture;
@@ -75,7 +77,7 @@ public class GameScreen3_levelend implements Screen {
         pigTexture2 = new Texture("pig_small.png");
         pigTexture3 = new Texture("pig_small.png");
         levelCompletedTexture = new Texture("level_completed.png"); // Load level completion image
-
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Initialize UI components
         setupUI();
     }
@@ -131,6 +133,7 @@ public class GameScreen3_levelend implements Screen {
         retryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new GameScreen3(game)); // Retry the same screen
             }
         });
@@ -196,6 +199,7 @@ public class GameScreen3_levelend implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new HomeScreen(game));
             }
         });
@@ -208,6 +212,7 @@ public class GameScreen3_levelend implements Screen {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.pauseCurrentScreen(GameScreen3_levelend.this);
             }
         });
@@ -220,6 +225,7 @@ public class GameScreen3_levelend implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game, GameScreen3_levelend.this));
             }
         });

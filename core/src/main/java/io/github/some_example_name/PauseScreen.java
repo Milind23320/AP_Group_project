@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,19 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-
+import com.badlogic.gdx.audio.Music;
 public class PauseScreen implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
     private BitmapFont font;
     private Texture backgroundTexture;
     private Screen prevScreen; // Previous screen reference
-
+    private Sound sound;
     public PauseScreen(AngryBirdsGame game, Screen prevScreen) {
         this.game = game;
         this.prevScreen = prevScreen;
         this.stage = new Stage(new ScreenViewport());
-
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Load the background texture
         backgroundTexture = new Texture("default_background.jpeg");
 
@@ -58,6 +59,7 @@ public class PauseScreen implements Screen {
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(prevScreen);// Return to the game screen that was paused
                 if(prevScreen instanceof GameScreen1){
                     Gdx.input.setInputProcessor(((GameScreen1) prevScreen).getStage());

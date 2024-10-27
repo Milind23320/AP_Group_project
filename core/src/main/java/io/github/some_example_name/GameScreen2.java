@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-
+import com.badlogic.gdx.audio.Music;
 public class GameScreen2 implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
@@ -42,7 +43,7 @@ public class GameScreen2 implements Screen {
     private Texture pigTexture1;
     private Texture pigTexture2;
     private Texture pigTexture3;
-
+    private Sound sound;
     public GameScreen2(AngryBirdsGame game) {
         this.game = game;
         // Set up viewport to maintain aspect ratio
@@ -75,7 +76,7 @@ public class GameScreen2 implements Screen {
         pigTexture1 = new Texture("pig_small.png");
         pigTexture2 = new Texture("pig_small.png");
         pigTexture3 = new Texture("pig_small.png");
-
+        sound =Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Initialize UI components
         setupUI();
     }
@@ -187,6 +188,7 @@ public class GameScreen2 implements Screen {
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new HomeScreen(game));
             }
         });
@@ -199,6 +201,7 @@ public class GameScreen2 implements Screen {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.pauseCurrentScreen(GameScreen2.this);
             }
         });
@@ -211,6 +214,7 @@ public class GameScreen2 implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game, GameScreen2.this));
             }
         });
@@ -231,6 +235,7 @@ public class GameScreen2 implements Screen {
         finishLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new GameScreen2_levelend(game)); // Navigate to level end screen
             }
         });

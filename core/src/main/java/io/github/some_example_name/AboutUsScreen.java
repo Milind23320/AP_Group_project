@@ -1,7 +1,8 @@
 package io.github.some_example_name;
-
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 
 public class AboutUsScreen implements Screen {
+    private Sound sound;
     private AngryBirdsGame game;
     private Stage stage;
     private Texture backgroundTexture;
@@ -23,12 +25,13 @@ public class AboutUsScreen implements Screen {
     private Screen pauseprevscreen;
     public AboutUsScreen(AngryBirdsGame game,Screen pauseprevscreen) {
         this.game = game;
+
         this.pauseprevscreen=pauseprevscreen;
         stage = new Stage(new FitViewport(800, 600));
 
         // Load the background texture
         backgroundTexture = new Texture("About_us_screen.png");
-
+        sound = Gdx.audio.newSound(Gdx.files.internal("drop.mp3"));
         // Load the dark box texture
         darkBoxTexture = new Texture("black_screen.png");
 
@@ -88,6 +91,7 @@ public class AboutUsScreen implements Screen {
         closeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                sound.play();
                 game.setScreen(new SettingsScreen(game,pauseprevscreen)); // Navigate to SettingsScreen
             }
         });
