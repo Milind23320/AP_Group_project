@@ -85,3 +85,5 @@ This game was developed as part of a project to build a static GUI for an Angry 
 By-
 Milind Kumar, 2023320
 Deepak Meena, 2023188
+P.S.
+The sound and music was taken from libgdx simple game.
