@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class GameScreen1 implements Screen {
+public class GameScreen1_levelend implements Screen {
     private AngryBirdsGame game;
     private Stage stage;
     private Texture slingshotTexture;
@@ -42,17 +42,18 @@ public class GameScreen1 implements Screen {
     private Texture pigTexture1;
     private Texture pigTexture2;
     private Texture pigTexture3;
+    // Level completion texture
+    private Texture levelCompletedTexture;
 
-    public GameScreen1(AngryBirdsGame game) {
+    // Textures for birds and obstacles omitted for brevity
+
+    public GameScreen1_levelend(AngryBirdsGame game) {
         this.game = game;
-        // Set up viewport to maintain aspect ratio
         stage = new Stage(new FitViewport(800, 600));
 
         // Load essential textures
         slingshotTexture = new Texture("slingshot.png");
         backgroundTexture = new Texture("background_game.jpeg");
-
-        // Load bird textures
         redBirdTexture = new Texture("red_bird.png");
         blueBirdTexture = new Texture("blue_bird.png");
         yellowBirdTexture = new Texture("yellow_bird.png");
@@ -75,12 +76,16 @@ public class GameScreen1 implements Screen {
         pigTexture1 = new Texture("pig_small.png");
         pigTexture2 = new Texture("pig_small.png");
         pigTexture3 = new Texture("pig_small.png");
+        levelCompletedTexture = new Texture("level_completed.png"); // Load level completion image
+
+        // Load other textures omitted for brevity
 
         // Initialize UI components
         setupUI();
     }
 
     private void setupUI() {
+        // Create and add background
         // Create and add background
         Image background = new Image(backgroundTexture);
         background.setSize(800, 600);
@@ -113,9 +118,42 @@ public class GameScreen1 implements Screen {
 
         // Add buttons (quit, pause, settings)
         setupButtons();
-        createFinishLevelButton();
-    }
+        // Add the level completed image at the center of the screen
+        Image levelCompletedImage = new Image(levelCompletedTexture);
+        levelCompletedImage.setSize(400, 320); // Adjust size as needed
+        levelCompletedImage.setPosition(200, 300); // Center position
+        stage.addActor(levelCompletedImage);
 
+        // Create Retry button
+        Label.LabelStyle buttonStyle = new Label.LabelStyle();
+        buttonStyle.font = new BitmapFont(); // Use a suitable font
+        buttonStyle.fontColor = Color.WHITE; // White text color
+
+        Label retryButton = new Label("Retry", buttonStyle);
+        retryButton.setFontScale(1.5f);
+        retryButton.setPosition(300, 230); // Position below the level completed image
+        retryButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen1(game)); // Go back to GameScreen1
+            }
+        });
+        stage.addActor(retryButton);
+
+        // Create Next Level button
+        Label nextLevelButton = new Label("Next Level", buttonStyle);
+        nextLevelButton.setFontScale(1.5f);
+        nextLevelButton.setPosition(300, 180); // Position below the Retry button
+        nextLevelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen2(game)); // Go to GameScreen2
+            }
+        });
+        stage.addActor(nextLevelButton);
+
+
+    }
     private void arrangeObstacles() {
         // Base blocks
         Image woodSquareLeft = new Image(woodSquareTexture);
@@ -177,8 +215,6 @@ public class GameScreen1 implements Screen {
         pig3.setPosition(555, 85); // Move over the right base block
         stage.addActor(pig3);
     }
-
-
     private void setupButtons() {
         // Quit Button
         Image quitButton = new Image(quitButtonTexture);
@@ -199,7 +235,7 @@ public class GameScreen1 implements Screen {
         pauseButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.pauseCurrentScreen(GameScreen1.this);
+                game.pauseCurrentScreen(GameScreen1_levelend.this);
             }
         });
         stage.addActor(pauseButton);
@@ -211,34 +247,11 @@ public class GameScreen1 implements Screen {
         settingsButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new SettingsScreen(game, GameScreen1.this));
+                game.setScreen(new SettingsScreen(game, GameScreen1_levelend.this));
             }
         });
         stage.addActor(settingsButton);
     }
-
-    private void createFinishLevelButton() {
-        // Create "Finish Level" button
-        Label.LabelStyle buttonStyle = new Label.LabelStyle();
-        buttonStyle.font = new BitmapFont(); // Use a suitable font
-        buttonStyle.fontColor = Color.WHITE; // White text color
-
-        Label finishLevelButton = new Label("Finish Level", buttonStyle);
-        finishLevelButton.setFontScale(2f); // Scale up the text
-
-        // Position at the bottom right of the screen
-        finishLevelButton.setPosition(650, 30); // Adjust the position as needed (x=650, y=30)
-
-        finishLevelButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new GameScreen1_levelend(game)); // Navigate to level end screen
-            }
-        });
-
-        stage.addActor(finishLevelButton);
-    }
-
 
     @Override
     public void show() {
@@ -289,6 +302,8 @@ public class GameScreen1 implements Screen {
         pigTexture1.dispose();
         pigTexture2.dispose();
         pigTexture3.dispose();
+        levelCompletedTexture.dispose(); // Dispose of the level completion texture
+        // Dispose of other textures omitted for brevity
     }
 
     public InputProcessor getStage() {

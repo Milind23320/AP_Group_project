@@ -3,11 +3,14 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -110,6 +113,7 @@ public class GameScreen3 implements Screen {
 
         // Add buttons (quit, pause, settings)
         setupButtons();
+        createFinishLevelButton();
     }
 
     private void arrangeObstacles() {
@@ -211,6 +215,28 @@ public class GameScreen3 implements Screen {
             }
         });
         stage.addActor(settingsButton);
+    }
+
+    private void createFinishLevelButton() {
+        // Create "Finish Level" button
+        Label.LabelStyle buttonStyle = new Label.LabelStyle();
+        buttonStyle.font = new BitmapFont(); // Use a suitable font
+        buttonStyle.fontColor = Color.WHITE; // White text color
+
+        Label finishLevelButton = new Label("Finish Level", buttonStyle);
+        finishLevelButton.setFontScale(2f); // Scale up the text
+
+        // Position at the bottom right of the screen
+        finishLevelButton.setPosition(650, 30); // Adjust the position as needed (x=650, y=30)
+
+        finishLevelButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new GameScreen3_levelend(game)); // Navigate to level end screen
+            }
+        });
+
+        stage.addActor(finishLevelButton);
     }
 
     @Override
