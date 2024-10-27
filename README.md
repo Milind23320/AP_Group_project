@@ -73,6 +73,7 @@ Clone the repository:
 bash
 Copy code
 git clone https://github.com/your_repository_url.git
+(Not needed, since the repository is right here)
 Open the project in your preferred development environment.
 Import the project as a Gradle project (LibGDX setup).
 Run the AngryBirdsGame class to start the application.
